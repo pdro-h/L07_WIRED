@@ -46,7 +46,7 @@ The lab uses **Wazuh** as the SIEM, with an agent deployed on L07_CORP shipping 
 
 To effectively monitor the attack flow and catch specific behaviors, custom decoders and rules were developed to parse raw application logs and trigger actionable alerts.
 
-**[Custom Decoders](./wazuh/)**: Built with PCRE2 regular expressions to extract key fields (`srcuser`, `filename`, `srcip`) from raw Jenkins, Samba, and FTP logs. Includes modular parent/child decoders (Custom Samba Decoder) to handle complex log structures.
+**[Custom Decoders](./wazuh/custom_decoders/)**: Built with PCRE2 regular expressions to extract key fields (`srcuser`, `filename`, `srcip`) from raw Jenkins, Samba, and FTP logs. Includes modular parent/child decoders (Custom Samba Decoder) to handle complex log structures.
 
 **[Custom Rules](./wazuh/local_rules.xml)**: Configured to evaluate the decoded fields, filter by `program_name` for performance, and trigger alerts mapped directly to the MITRE ATT&CK framework.
 
