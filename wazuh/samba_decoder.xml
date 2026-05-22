@@ -1,0 +1,5 @@
+<decoder name="smbd_audit_custom">
+  <parent>smbd</parent>
+  <regex type="pcre2">^([^\|]+)\|([^\|]+)\|([^\|]+)\|([^\|]+)\|([^\|]+)\|([^\|]+)\|(.*)</regex>
+  <order>srcuser, srcip, srcname, share, action, status, filename</order>
+</decoder>

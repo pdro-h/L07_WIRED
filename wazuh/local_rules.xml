@@ -1,0 +1,62 @@
+<group name="vsftpd,ftp,">
+  <rule id="100001" level="10">
+    <if_sid>11402</if_sid>
+    <match>anon password</match>
+    <description>FTP anonymous login detected</description>
+    <mitre>
+      <id>T1078</id>
+    </mitre>
+  </rule>
+
+  <rule id="100002" level="10">
+    <program_name>^vsftpd</program_name>
+    <match>OK DOWNLOAD</match>
+    <description>FTP file download detected</description>
+    <mitre>
+      <id>T1078</id>
+    </mitre>
+  </rule>
+</group>
+
+<group name="samba,audit">
+  <rule id="100200" level="5">
+    <program_name>^smbd_audit</program_name>
+    <regex>open</regex>
+    <description>Samba: Inicio de acesso ao arquivo $(filename) pelo usuario $(srcuser)</description>
+    <options>alert_by_email</options>
+  </rule>
+
+  <rule id="100201" level="5" frequency="10" timeframe="60">
+    <if_matched_sid>100200</if_matched_sid>
+    <same_field>srcuser</same_field>
+    <same_field>filename</same_field>
+    <description>Samba: Atividade continua no arquivo $(filename) pelo usuario $(srcuser)</description>
+    <mitre>
+      <id>T1039</id>
+    </mitre>
+  </rule>
+</group>
+
+<group name="jenkins_audit,">
+  <rule id="100100" level="3">
+    <decoded_as>jenkins-audit-trail</decoded_as>
+    <description>Evento de auditoria do Jenkins (Audit Trail)</description>
+    <group>jenkins,audit</group>
+  </rule>
+
+  <rule id="100101" level="10">
+    <if_sid>100100</if_sid>
+    <match>/script</match>
+    <description>Acesso ao Jenkins Script Console detectado (Audit Trail)</description>
+    <group>jenkins,attack_command_execution,policy_violation</group>
+  </rule>
+
+  <rule id="100102" level="12">
+    <decoded_as>jenkins-audit-groovy</decoded_as>
+    <description>Jenkins Script Console execution detected</description>
+    <group>jenkins,attack_command_execution,</group>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+  </rule>
+</group>
